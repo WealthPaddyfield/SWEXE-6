@@ -1,0 +1,9 @@
+<h1>カート一覧（管理用）</h1>
+
+<ul>
+  <% @carts.each do |c| %>
+    <li><%= link_to "Cart ##{c.id} (#{c.cart_items.count} items)", cart_path(c) %></li>
+  <% end %>
+</ul>
+
+<p><%= link_to "現在のカートを表示", cart_path(current_cart) %></p>

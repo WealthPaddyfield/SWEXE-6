@@ -1,0 +1,28 @@
+<h1>カート（ID: <%= @cart.id %>）</h1>
+
+<p><%= link_to "商品一覧に戻る", products_path %></p>
+
+<% if @items.empty? %>
+  <p>カートは空です。</p>
+<% else %>
+  <table>
+    <thead>
+      <tr><th>商品</th><th>価格</th><th>数量</th><th>小計</th><th>操作</th></tr>
+    </thead>
+    <tbody>
+      <% @items.each do |ci| %>
+        <tr>
+          <td><%= ci.product&.name || "削除済み商品" %></td>
+          <td><%= number_to_currency(ci.product&.price || 0, unit: "￥", precision: 0) %></td>
+          <td><%= ci.quantity %></td>
+          <td><%= number_to_currency((ci.product&.price || 0) * ci.quantity, unit: "￥", precision: 0) %></td>
+          <td>
+            <%= button_to "削除", cart_item_path(ci), method: :delete, data: { confirm: "カートから削除しますか？" } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <p><strong>合計: <%= number_to_currency(@cart.total_price, unit: "￥", precision: 0) %></strong></p>
+<% end %>

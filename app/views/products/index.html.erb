@@ -1,0 +1,26 @@
+<h1>商品一覧</h1>
+
+<p><%= link_to "商品を追加", new_product_path %> | <%= link_to "カートを見る", cart_path(current_cart) %></p>
+
+<table>
+  <thead>
+    <tr><th>ID</th><th>商品名</th><th>価格</th><th>操作</th></tr>
+  </thead>
+  <tbody>
+    <% @products.each do |p| %>
+      <tr>
+        <td><%= p.id %></td>
+        <td><%= p.name %></td>
+        <td><%= number_to_currency(p.price, unit: "￥", precision: 0) %></td>
+        <td>
+          <%= form_with url: cart_items_path, method: :post, local: true do %>
+            <%= hidden_field_tag :product_id, p.id %>
+            <%= number_field_tag :quantity, 1, min: 1, style: "width:60px" %>
+            <%= submit_tag "カートに追加" %>
+          <% end %>
+          <%= button_to "削除", product_path(p), method: :delete, data: { confirm: "削除しますか？" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
